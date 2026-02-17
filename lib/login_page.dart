@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                         padding: EdgeInsets.only(left: 20),
                         // width: MediaQuery.of(context).size.width * 0.9,
                         child: Image.asset(
-                          "assests/vegetables.png",
+                          "assets/vegetables.png",
                           height: 300,
                           width: 600,
                         ),
@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: Center(
                         child: Image.asset(
-                          'assests/logo_peedika.png',
+                          'assets/logo_peedika.png',
                           width: 116,
                         ),
                       ),
