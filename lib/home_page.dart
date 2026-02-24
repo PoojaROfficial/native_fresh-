@@ -26,6 +26,23 @@ final List<Map<String, String>> smallCategories = [
   // {"title": "Chocolates", "image": "assets/chocolate.png"},
   // {"title": "Biscuits", "image": "assets/biscuit.png"},
 ];
+final List<Map<String, String>> brandData = [
+  {
+    "logo": "assets/cadbury_logo.png",
+    "product": "assets/cadbury_chocolate.png",
+  },
+  {
+    "logo": "assets/cadbury_logo.png",
+    "product": "assets/cadbury_chocolate.png",
+  },
+  {
+    "logo": "assets/cadbury_logo.png",
+    "product": "assets/cadbury_chocolate.png",
+  },
+  {"logo": "assets/tea_logo.png", "product": "assets/tata_bag.png"},
+  {"logo": "assets/tea_logo.png", "product": "assets/tata_bag.png"},
+  {"logo": "assets/tea_logo.png", "product": "assets/tata_bag.png"},
+];
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -394,7 +411,7 @@ class _HomePageState extends State<HomePage> {
                             crossAxisCount: 4,
                             crossAxisSpacing: 12,
                             mainAxisSpacing: 12,
-                            childAspectRatio: 0.9,
+                            childAspectRatio: 0.8,
                           ),
                       itemBuilder: (context, index) {
                         final item = smallCategories[index];
@@ -561,7 +578,46 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
 
-                    const SizedBox(height: 30),
+                    // const SizedBox(height: 30),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30),
+              
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Brand Spotlight",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: brandData.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 0.9,
+                      ),
+                      itemBuilder: (context, index) {
+                        return brandCard(
+                          brandData[index]["logo"]!,
+                          brandData[index]["product"]!,
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 40),
                   ],
                 ),
               ),
@@ -928,4 +984,23 @@ class BigPackCategory extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget brandCard(String logo, String product) {
+  return Container(
+    decoration: BoxDecoration(
+      color: const Color(0xFFDDEEDC),
+      borderRadius: BorderRadius.circular(25),
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: 10),
+        Image.asset(logo, height: 28, fit: BoxFit.contain),
+        const SizedBox(height: 6),
+        Image.asset(product, height: 80, fit: BoxFit.contain),
+      ],
+    ),
+  );
 }

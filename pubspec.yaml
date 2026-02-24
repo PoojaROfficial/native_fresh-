@@ -67,7 +67,11 @@ flutter:
     - assets/icecream_sunday.png
     - assets/pepsi.png
     - assets/chocolate.png
+    - assets/cadbury_chocolate.png
     - assets/vegetable_basket.png
+    - assets/cadbury_logo.png
+    - assets/tata_bag.png
+    - assets/tea_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
