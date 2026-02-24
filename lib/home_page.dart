@@ -27,10 +27,25 @@ final List<Map<String, String>> smallCategories = [
   // {"title": "Biscuits", "image": "assets/biscuit.png"},
 ];
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  int selectedBigPackIndex = 0;
+
+  final List<Map<String, dynamic>> bigPackTabs = [
+    {"title": "Atta &\nFlours", "icon": Icons.grain},
+    {"title": "Ghee & Oil", "icon": Icons.oil_barrel},
+    {"title": "Rice & Dals", "icon": Icons.rice_bowl},
+    {"title": "Masala &\nSpices", "icon": Icons.spa},
+    {"title": "Sugar", "icon": Icons.icecream},
+  ];
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -411,7 +426,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 350,
+                // height: 340,
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -427,12 +442,12 @@ class HomePage extends StatelessWidget {
 
                     /// Basket Image
                     Positioned(
-                      left: 0,
-                      bottom: 0,
-                      top: -130,
+                      left: -20,
+                      bottom: -45,
+
                       child: Image.asset(
                         "assets/vegetable_basket.png", // your basket image
-                        height: 400,
+                        height: 300,
                         width: 380,
                       ),
                     ),
@@ -460,7 +475,96 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 200),
+              const SizedBox(height: 50),
+              SizedBox(
+                height: 90, // increase little bit
+                child: PageView.builder(
+                  controller: PageController(
+                    viewportFraction: 0.8,
+                    initialPage: 1,
+                  ),
+
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFDDEEDC),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 100),
+
+              /// 🔹 Big Packs Big Savings
+              Container(
+                width: double.infinity,
+                color: const Color(0xFFE6F3E8),
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        "Big Packs Big Savings",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    SizedBox(
+                      height: 70,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        itemCount: bigPackTabs.length,
+
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedBigPackIndex = index;
+                              });
+                            },
+                            child: BigPackCategory(
+                              title: bigPackTabs[index]["title"],
+
+                              selected: selectedBigPackIndex == index,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    SizedBox(
+                      height: 270,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: bigPackProductCard(selectedBigPackIndex),
+                          );
+                        },
+                      ),
+                    ),
+
+                    const SizedBox(height: 30),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -572,7 +676,7 @@ Widget dealProductCard() {
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
             color: Colors.purple,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(5),
           ),
           child: const Text(
             "16% Off",
@@ -591,37 +695,161 @@ Widget dealProductCard() {
         const SizedBox(height: 8),
 
         /// Category Tag
-        Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-              decoration: BoxDecoration(
-                color: Colors.green.shade50,
-                borderRadius: BorderRadius.circular(0),
-              ),
-              child: const Text(
-                "• BAKERY",
-                style: TextStyle(
-                  fontSize: 9,
-                  color: Color.fromARGB(255, 14, 110, 19),
-                  fontWeight: FontWeight.bold,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade50,
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                child: const Text(
+                  "• BAKERY",
+                  style: TextStyle(
+                    fontSize: 9,
+                    color: Color.fromARGB(255, 14, 110, 19),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
+
+              const SizedBox(height: 6),
+
+              const Text(
+                "Extra Cheesy Lays\nClassic",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+              ),
+
+              // const SizedBox(height: 4),
+              const Text("100 g", style: TextStyle(fontSize: 11, height: 2)),
+
+              const SizedBox(height: 0),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "₹ 60",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          height: 1,
+                        ),
+                      ),
+                      Text(
+                        "₹ 60",
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.grey,
+                          decoration: TextDecoration.lineThrough,
+                          height: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  Container(
+                    height: 25,
+
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.green),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 4,
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: const Text(
+                        "ADD",
+                        style: TextStyle(color: Colors.green, fontSize: 12),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget bigPackProductCard(int categoryIndex) {
+  String title;
+  switch (categoryIndex) {
+    case 0:
+      title = "Atta Special Pack";
+      break;
+    case 1:
+      title = "Premium Ghee";
+      break;
+    case 2:
+      title = "Basmati Rice";
+      break;
+    case 3:
+      title = "Masala Combo Pack";
+      break;
+    case 4:
+      title = "Sugar Family Pack";
+      break;
+    default:
+      title = "Product";
+  }
+
+  return Container(
+    width: 160,
+    padding: const EdgeInsets.all(12),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(18),
+      boxShadow: [
+        BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: Colors.purple,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: const Text(
+            "16% Off",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
             ),
-          ],
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        Center(child: Image.asset("assets/lays_extracheesy.png", height: 90)),
+
+        const SizedBox(height: 10),
+
+        const Text(
+          "Extra Cheesy Lays\nClassic",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
         ),
 
         const SizedBox(height: 6),
 
-        const Text(
-          "Extra Cheesy Lays\nClassic",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-        ),
-
-        // const SizedBox(height: 4),
-        const Text("100 g", style: TextStyle(fontSize: 11)),
-
-        // const SizedBox(height: 6),?
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -630,10 +858,10 @@ Widget dealProductCard() {
               children: const [
                 Text(
                   "₹ 60",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                 ),
                 Text(
-                  "₹ 60",
+                  "₹ 75",
                   style: TextStyle(
                     fontSize: 11,
                     color: Colors.grey,
@@ -642,14 +870,16 @@ Widget dealProductCard() {
                 ),
               ],
             ),
-
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: Colors.green),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
               ),
               onPressed: () {},
               child: const Text(
@@ -662,4 +892,40 @@ Widget dealProductCard() {
       ],
     ),
   );
+}
+
+class BigPackCategory extends StatelessWidget {
+  final String title;
+  final bool selected;
+
+  const BigPackCategory({
+    super.key,
+    required this.title,
+    this.selected = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 90,
+      margin: const EdgeInsets.only(right: 12),
+      decoration: BoxDecoration(
+        color: selected ? const Color(0xFFDDEEDC) : Colors.transparent,
+        borderRadius: BorderRadius.circular(18),
+        border: selected ? Border.all(color: Colors.green, width: 2) : null,
+      ),
+      padding: const EdgeInsets.all(8),
+      child: Center(
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: selected ? Colors.green : Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
 }
